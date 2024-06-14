@@ -4,16 +4,17 @@
 
 void PlatformScene::Start() 
 {
-    Camera = new OrthoCamera(Win.GetWidth(), Win.GetHeight());
+    Camera = new OrthoCamera(Win.GetWidth(), Win.GetHeight(), 10);
 
-    Quad* Q1 = new Quad(100, 10);
-    Q1->Position = glm::vec3{300, 300, 0};
+    Quad* Floor = new Quad(Camera->GetOrthoWidth(), 1);
+    Floor->Position = glm::vec3{0, -Camera->GetOrthoHeight() * 0.5f + Floor->Scale.y * 0.5f, 0};
 
-    Quad* Q2 = new Quad(100, 10);
-    Q2->Position = glm::vec3{500, 300, 0};
+    Quad* Player = new Quad(1, 1);
+    Player->Position = glm::vec3{0, 0, 0};
+    Player->Color = Color_Red;
     
-    Quads.push_back(Q1);    
-    Quads.push_back(Q2);    
+    Quads.push_back(Floor);    
+    Quads.push_back(Player);    
 }
 
 void PlatformScene::Update()

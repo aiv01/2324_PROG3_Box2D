@@ -12,10 +12,10 @@ OGLQuadRender::OGLQuadRender()
 
         std::vector<float> Vertices = {
             0.5f, -0.5f, 0.0f, //bottom right
-        -0.5f, -0.5f, 0.0f, //bottom left
-        -0.5f,  0.5f, 0.0f, //top left
+           -0.5f, -0.5f, 0.0f, //bottom left
+           -0.5f,  0.5f, 0.0f, //top left
 
-        -0.5f,  0.5f, 0.0f, //top left
+           -0.5f,  0.5f, 0.0f, //top left
             0.5f,  0.5f, 0.0f, //top right
             0.5f, -0.5f, 0.0f  //bottom right
     };
@@ -41,7 +41,7 @@ OGLQuadRender::OGLQuadRender()
 
 void OGLQuadRender::Draw(const std::vector<Quad*>& Quads, const OrthoCamera* Cam) 
 {
-    glViewport(0, 0, Cam->GetWidth(), Cam->GetHeight());
+    glViewport(0, 0, Cam->GetResoWidth(), Cam->GetResoHeight());
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindVertexArray(Vao);

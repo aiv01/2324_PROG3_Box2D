@@ -5,7 +5,7 @@
 class Quad 
 {
 public:
-    Quad(int w, int h) 
+    Quad(float w, float h) 
     : Position(glm::vec3(0)), 
       Rotation(glm::vec3(0)), 
       Scale(glm::vec3(w, h, 0)),
