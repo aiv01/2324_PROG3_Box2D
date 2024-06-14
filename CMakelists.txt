@@ -13,11 +13,13 @@ target_include_directories(${EXEC_TARGET} PRIVATE include src)
 find_package(glad REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm  REQUIRED)
+find_package(box2d REQUIRED)
 
 target_link_libraries(${EXEC_TARGET} PRIVATE 
   glad::glad
   glfw
   glm::glm
+  box2d::box2d
 )
 
 # Post build: Copy Resources to bin

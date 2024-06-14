@@ -11,6 +11,7 @@ public:
     PlatformScene(const OGLWindow& InWin) : Win(InWin) { }
     void Start();
     void Update();
+    void FixedUpdate();
     void Destroy();
 private:
     std::vector<Quad*> Quads;

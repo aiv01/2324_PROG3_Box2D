@@ -1,12 +1,19 @@
 #include <iostream>
 #include "OGLWindow.h"
 #include "PlatformScene.h"
+#include "ServiceRegistry.h"
+#include "physics/Physics2D.h"
 
 int main() {
 	std::cout << "It' Working" << std::endl;
 
 	OGLWindow* Win = new OGLWindow(800, 600, "OpenGL Window");
 	
+	float FixedDeltaTime = 0.016f;
+	Physics2D Physics{glm::vec2{0, -9.81f}, FixedDeltaTime};
+
+	ServiceRegistry::GetInstance().SetPhysics(&Physics);
+
 	float TimeElapsed = 0.f;
 
 	PlatformScene Scene{*Win};
@@ -27,9 +34,17 @@ int main() {
 
 			Win->SetTitle(Title);
 		}
+
+		static float FixedTimeElapsed = 0.f;
+		FixedTimeElapsed += Win->GetDeltaTime();
+		if (FixedTimeElapsed >= FixedDeltaTime) 
+		{
+			FixedTimeElapsed -= FixedDeltaTime;
+			Scene.FixedUpdate();
+			Physics.Step();
+		}
 	
 		Scene.Update();
-		
 		Win->Update();
 	}
 

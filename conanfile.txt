@@ -2,6 +2,7 @@
 glfw/3.4
 glad/0.1.36
 glm/1.0.1
+box2d/2.4.1
 
 [options]
 glad/*:spec=gl
