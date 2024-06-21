@@ -5,6 +5,7 @@ Physics2D::Physics2D(glm::vec2 InGravity, float InFixedDeltaTime)
     b2Vec2 BoxGravity{InGravity.x, InGravity.y};
     World = new b2World(BoxGravity);
     FixedDeltaTime = InFixedDeltaTime;
+    World->SetContactListener(&ContactListener);
 }
 
 b2Body* Physics2D::CreateBody(const b2BodyDef* InDef)

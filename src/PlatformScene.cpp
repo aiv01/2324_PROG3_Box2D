@@ -3,6 +3,9 @@
 #include "OrthoCamera.h"
 #include "physics/RigidBody2D.h"
 #include "physics/BoxCollider2D.h"
+#include "iostream"
+//#include "physics/Physics2DContactListener.h"
+//#include <functional>
 
 void PlatformScene::Start()
 {
@@ -11,17 +14,26 @@ void PlatformScene::Start()
     Quad *Floor = new Quad(Camera->GetOrthoWidth(), 1);
     Floor->Position = glm::vec3{0, -Camera->GetOrthoHeight() * 0.5f + Floor->Scale.y * 0.5f, 0};
     Floor->Collider = new BoxCollider2D(Floor);
+    Floor->Name = "Floor";
 
     Platform = new Quad(3,.5f);
     Platform->Position = glm::vec3{4, 0, 0};
     Platform->Color = Color_Yellow;
     Platform->Collider = new BoxCollider2D(Platform);
     Platform->RigidBody = new RigidBody2D(Platform, RigidBodyType::Kinematic);
+    Platform->Name = "Platform";
 
     Player = new Quad(1, 1);
     Player->Position = glm::vec3{0, 0, 0};
     Player->Color = Color_Red;
-    Player->Collider = new BoxCollider2D(Player);
+    Player->Name = "Player";
+
+    CollisionCallBack PlayerCB;
+    PlayerCB.OnEnter = [](Quad* Other){
+        std::cout << "OnEnter: " << Other->Name << std::endl;
+    };
+
+    Player->Collider = new BoxCollider2D(Player, PlayerCB);
     Player->RigidBody = new RigidBody2D(Player, RigidBodyType::Dynamic);
 
     Quads.push_back(Floor);
@@ -37,7 +49,7 @@ void PlatformScene::Update()
     static float PlatformSpeed = -1.f;
 
     Platform->RigidBody->SetVelocity(glm::vec2{PlatformSpeed, 0});
-    
+
     if (Platform->Position.x < -4 && PlatformSpeed < 0)
         PlatformSpeed *= -1.f;
     if (Platform->Position.x > 4 && PlatformSpeed > 0)

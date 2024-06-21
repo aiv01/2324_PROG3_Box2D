@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <box2d/box2d.h>
+#include "physics/Physics2DContactListener.h"
 
 class Physics2D
 {
@@ -11,4 +12,5 @@ public:
 private:
     b2World* World;
     float FixedDeltaTime;
+    Physics2DContactListener ContactListener;
 };

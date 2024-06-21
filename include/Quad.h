@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "Common.h"
+#include <string>
 
 class Quad 
 {
@@ -11,7 +12,8 @@ public:
       Scale(glm::vec3(w, h, 0)),
       Color(Color_White),
       RigidBody(nullptr),
-      Collider(nullptr)
+      Collider(nullptr), 
+      Name("Default Name")
     {};
 
     ~Quad()
@@ -29,4 +31,5 @@ public:
     Color Color;
     class RigidBody2D* RigidBody;
     class BoxCollider2D* Collider;
+    std::string Name;
 };

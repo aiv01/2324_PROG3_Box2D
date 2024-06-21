@@ -5,11 +5,11 @@
 #include "ServiceRegistry.h"
 #include "physics/Physics2D.h"
 
-
-
-BoxCollider2D::BoxCollider2D(Quad* InQuad) 
+BoxCollider2D::BoxCollider2D(Quad* InQuad, CollisionCallBack CallBack) 
 {
     Object = InQuad;
+    UserData = CallBack;
+    UserData.Object = InQuad;
 
     if(!Object->RigidBody)
     {
@@ -34,6 +34,7 @@ BoxCollider2D::BoxCollider2D(Quad* InQuad)
     b2FixtureDef FixtureDef;
     FixtureDef.shape = &Box;
     FixtureDef.isSensor = false;
+    FixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(&UserData);
 
     Fixture = Body->CreateFixture(&FixtureDef);
 }
