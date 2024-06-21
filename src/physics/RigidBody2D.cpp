@@ -1,4 +1,5 @@
 #include "physics/RigidBody2D.h"
+#include "physics/BoxCollider2D.h"
 #include <box2d/box2d.h>
 #include "Quad.h"
 #include "ServiceRegistry.h"
@@ -8,12 +9,20 @@ RigidBody2D::RigidBody2D(Quad* InQuad)
 {
     Object = InQuad;
 
-    //1. Create Body
-    b2BodyDef BodyDef;
-    BodyDef.type = b2BodyType::b2_dynamicBody;
-    BodyDef.position.Set(Object->Position.x, Object->Position.y);
+    if(!Object->Collider)
+    {
+        //1. Create Body
+        b2BodyDef BodyDef;
+        BodyDef.type = b2BodyType::b2_dynamicBody;
+        BodyDef.position.Set(Object->Position.x, Object->Position.y);
 
-    Body = ServiceRegistry::GetInstance().GetPhysics()->CreateBody(&BodyDef);
+        Body = ServiceRegistry::GetInstance().GetPhysics()->CreateBody(&BodyDef);
+    }
+    else
+    {
+        Body = Object->Collider->Body;
+        Body->SetType(b2BodyType::b2_dynamicBody);
+    }
 
     glm::vec3 BodySize = InQuad->Scale;
     BodySize *= 0.5f;  //extent like

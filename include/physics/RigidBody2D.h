@@ -9,4 +9,6 @@ private:
     class Quad* Object;
     class b2Body* Body;
     class b2Fixture* Fixture;
+
+    friend class BoxCollider2D;
 };
