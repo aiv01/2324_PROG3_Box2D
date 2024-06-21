@@ -18,4 +18,5 @@ private:
     const OGLWindow& Win;
     OGLQuadRender Renderer;
     OrthoCamera* Camera;
+    Quad* Player;
 };
