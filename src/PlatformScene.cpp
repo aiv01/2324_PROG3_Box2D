@@ -12,14 +12,21 @@ void PlatformScene::Start()
     Floor->Position = glm::vec3{0, -Camera->GetOrthoHeight() * 0.5f + Floor->Scale.y * 0.5f, 0};
     Floor->Collider = new BoxCollider2D(Floor);
 
+    Platform = new Quad(3,.5f);
+    Platform->Position = glm::vec3{4, 0, 0};
+    Platform->Color = Color_Yellow;
+    Platform->Collider = new BoxCollider2D(Platform);
+    Platform->RigidBody = new RigidBody2D(Platform, RigidBodyType::Kinematic);
+
     Player = new Quad(1, 1);
     Player->Position = glm::vec3{0, 0, 0};
     Player->Color = Color_Red;
     Player->Collider = new BoxCollider2D(Player);
-    Player->RigidBody = new RigidBody2D(Player);
+    Player->RigidBody = new RigidBody2D(Player, RigidBodyType::Dynamic);
 
     Quads.push_back(Floor);
     Quads.push_back(Player);
+    Quads.push_back(Platform);
 }
 
 void PlatformScene::Update()
@@ -27,6 +34,15 @@ void PlatformScene::Update()
     Renderer.Draw(Quads, Camera);
 
     static bool IsJumpPressed = false;
+    static float PlatformSpeed = -1.f;
+
+    Platform->RigidBody->SetVelocity(glm::vec2{PlatformSpeed, 0});
+    
+    if (Platform->Position.x < -4 && PlatformSpeed < 0)
+        PlatformSpeed *= -1.f;
+    if (Platform->Position.x > 4 && PlatformSpeed > 0)
+        PlatformSpeed *= -1.f;
+
 
     if (Win.IsKeyPressed(Key::KEY_UP))
     {
@@ -36,7 +52,6 @@ void PlatformScene::Update()
             IsJumpPressed = true;
         }
     }
-
     else
     {
         IsJumpPressed = false;
@@ -44,12 +59,12 @@ void PlatformScene::Update()
 
     if (Win.IsKeyPressed(Key::KEY_LEFT))
     {
-        Player->RigidBody->AddForce(glm::vec2(-10, 0));
+        Player->RigidBody->AddForce(glm::vec2(-1, 0));
     }
 
     else if (Win.IsKeyPressed(Key::KEY_RIGHT))
     {
-        Player->RigidBody->AddForce(glm::vec2(10, 0));
+        Player->RigidBody->AddForce(glm::vec2(1, 0));
     }
 }
 

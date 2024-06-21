@@ -19,4 +19,5 @@ private:
     OGLQuadRender Renderer;
     OrthoCamera* Camera;
     Quad* Player;
+    Quad* Platform;
 };
