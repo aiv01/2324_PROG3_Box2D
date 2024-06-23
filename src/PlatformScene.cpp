@@ -7,6 +7,9 @@
 //#include "physics/Physics2DContactListener.h"
 //#include <functional>
 
+static glm::vec2 _SelectedJumpForce{0, 0};
+static glm::vec2 _SelectedMoveForce{0, 0};
+
 void PlatformScene::Start()
 {
     Camera = new OrthoCamera(Win.GetWidth(), Win.GetHeight(), 10); // for simplicity: 1 OrthoSize = 1 meter
@@ -47,20 +50,26 @@ void PlatformScene::Update()
 
     static bool IsJumpPressed = false;
     static float PlatformSpeed = -1.f;
-
+    
+    //Eventually could be done only when velocity is changed
     Platform->RigidBody->SetVelocity(glm::vec2{PlatformSpeed, 0});
 
-    if (Platform->Position.x < -4 && PlatformSpeed < 0)
+    if (Platform->Position.x < -4 && PlatformSpeed < 0) 
+    {
         PlatformSpeed *= -1.f;
-    if (Platform->Position.x > 4 && PlatformSpeed > 0)
+    }
+    if (Platform->Position.x > 4 && PlatformSpeed > 0) 
+    {
         PlatformSpeed *= -1.f;
+    }      
 
 
     if (Win.IsKeyPressed(Key::KEY_UP))
     {
         if (!IsJumpPressed)
         {
-            Player->RigidBody->AddImpulse(glm::vec2(0, 5));
+            //Player->RigidBody->AddImpulse(glm::vec2(0, 5));
+            _SelectedJumpForce = glm::vec2(0, 5);
             IsJumpPressed = true;
         }
     }
@@ -71,17 +80,28 @@ void PlatformScene::Update()
 
     if (Win.IsKeyPressed(Key::KEY_LEFT))
     {
-        Player->RigidBody->AddForce(glm::vec2(-1, 0));
+        //Player->RigidBody->AddForce(glm::vec2(-1, 0));
+        _SelectedMoveForce = glm::vec2(-10, 0);
     }
 
     else if (Win.IsKeyPressed(Key::KEY_RIGHT))
     {
-        Player->RigidBody->AddForce(glm::vec2(1, 0));
+        //Player->RigidBody->AddForce(glm::vec2(1, 0));
+        _SelectedMoveForce = glm::vec2(10, 0);
     }
 }
 
 void PlatformScene::FixedUpdate()
 {
+    
+    Player->RigidBody->AddImpulse(_SelectedJumpForce);
+    _SelectedJumpForce = glm::vec2{0, 0};
+    
+
+    Player->RigidBody->AddForce(_SelectedMoveForce);
+    _SelectedMoveForce = glm::vec2{0, 0};
+
+
     for (auto *Each : Quads)
     {
         if (Each->RigidBody)

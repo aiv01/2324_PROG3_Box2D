@@ -23,6 +23,9 @@ OGLWindow::OGLWindow(int InWidth, int InHeight, const std::string& InTitle)
 
     // redirect all commands to window
 	glfwMakeContextCurrent(RawWindow);
+	
+	//Disable VSYNC with glfw api
+	//glfwSwapInterval(0);
 
     // load GLAD
 	DIE_ON_ERROR(gladLoadGL(), "Error: GLAD Wrapper");
